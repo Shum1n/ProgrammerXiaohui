@@ -1,5 +1,7 @@
 package chapter3.part1;
 
+import com.sun.istack.internal.NotNull;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Optional;
@@ -139,14 +141,14 @@ class Order {
 
         return null;
     }
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
         // 3291084
         TreeNode treeNode = createBinaryTree(new LinkedList<String>(Arrays.asList(INPUTLIST)));
         preOrder(treeNode);
     }
 
     // 定义节点
-    public static void main1(String[] args) {
+    public static void main(String[] args) {
         TreeNode f = new TreeNode("F");
         TreeNode b = new TreeNode("B");
         TreeNode g = new TreeNode("G");
@@ -167,23 +169,46 @@ class Order {
 
         // 前序遍历 根左右：根节点排最先，然后同级先左后右
         // FBADCEGIH
-//        preOrder(f);
-//        System.out.println();
-//        // 中序遍历 左根右
-//        inOrder(f);
-//        System.out.println();
+        System.out.println("前序遍历：");
+        preOrder(f);
+        System.out.println();
+        preOrderWithStack(f);
+        System.out.println();
+        System.out.println("中序遍历：");
+        // 中序遍历 左根右
+        inOrder(f);
+        System.out.println();
+        inorderWithStack(f);
+
+//        System.out.println("后序遍历");
 //        // 后序
 //        postOrder(f);
 
-        preOrderNo(f);
-        System.out.println();
-        inOrderNo(f);
     }
 
+    /**
+     * 递归前序遍历
+     * @param treeNode
+     */
     private static void preOrder(TreeNode treeNode){
         System.out.print(treeNode.val);
         Optional.ofNullable(treeNode.left).ifPresent(Order::preOrder);
         Optional.ofNullable(treeNode.right).ifPresent(Order::preOrder);
+    }
+
+    /**
+     * 非递归前序遍历
+     * @param treeNode
+     */
+    private static void preOrderWithStack(TreeNode treeNode){
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(treeNode);
+        for(;!stack.isEmpty();){
+            TreeNode current = stack.pop();
+            System.out.print(current.val);
+            Optional.ofNullable(current.getRight()).ifPresent(stack::push);
+            Optional.ofNullable(current.getLeft()).ifPresent(stack::push);
+        }
     }
 
     /**
@@ -194,6 +219,38 @@ class Order {
         Optional.ofNullable(treeNode.getLeft()).ifPresent(Order::inOrder);
         System.out.print(treeNode.val);
         Optional.ofNullable(treeNode.getRight()).ifPresent(Order::inOrder);
+    }
+
+    /**
+     * 非递归 中序遍历
+     * @param treeNode
+     */
+    private static void inorderWithStack(TreeNode treeNode) {
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        stack.push(treeNode);
+        for(;!stack.isEmpty() || treeNode!=null;){
+            if(treeNode.left !=null){
+                treeNode = treeNode.left;
+                stack.push(treeNode);
+                continue;
+            }
+            // 获取父节点
+            TreeNode pop = stack.pop();
+            if(pop.left == null){
+                // g 没有左节点只有右节点
+                System.out.print(pop.val);
+                pop = stack.pop();
+                System.out.print(pop.val);
+                if(pop.right != null){
+                    treeNode = pop.right;
+                    stack.push(pop.right);
+                }else{
+                    treeNode = null;
+                }
+            }
+        }
+
+
     }
 
     /**
@@ -212,21 +269,6 @@ class Order {
      * 用栈来保存先前走过的路径，以便可以在访问完子树后,可以利用栈中的信息,回退到当前节点的双亲节点,进行下一步操作。
      *
      */
-
-    /**
-     * 非递归前序遍历
-     * @param treeNode
-     */
-    private static void preOrderNo(TreeNode treeNode){
-        Stack<TreeNode> stack = new Stack<>();
-        stack.push(treeNode);
-        for(;!stack.isEmpty();){
-            TreeNode current = stack.pop();
-            System.out.print(current.val);
-            Optional.ofNullable(current.getRight()).ifPresent(stack::push);
-            Optional.ofNullable(current.getLeft()).ifPresent(stack::push);
-        }
-    }
 
     private static void inOrderNo(TreeNode treeNode){
         Stack<TreeNode> stack = new Stack<>();
