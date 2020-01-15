@@ -223,27 +223,32 @@ class Order {
 
     /**
      * 非递归 中序遍历
+     * 完全由我来控制节点，不合理。
      * @param treeNode
      */
+    @Deprecated
     private static void inorderWithStack(TreeNode treeNode) {
         Stack<TreeNode> stack = new Stack<TreeNode>();
         stack.push(treeNode);
         for(;!stack.isEmpty() || treeNode!=null;){
+            // 一直找到左节点
             if(treeNode.left !=null){
                 treeNode = treeNode.left;
                 stack.push(treeNode);
                 continue;
             }
-            // 获取父节点
+            // 从栈中取出，左（右）节点
             TreeNode pop = stack.pop();
             if(pop.left == null){
-                // g 没有左节点只有右节点
+                // 输出左节点
                 System.out.print(pop.val);
-                // 没理由
+                // 存粹为了应付
                 if(!stack.isEmpty()){
+                    // 接着取出上一个元素，输出 根节点
                     pop = stack.pop();
                     System.out.print(pop.val);
                 }
+                // 把右节点入栈
                 if(pop.right != null){
                     treeNode = pop.right;
                     stack.push(pop.right);
