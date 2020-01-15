@@ -239,8 +239,11 @@ class Order {
             if(pop.left == null){
                 // g 没有左节点只有右节点
                 System.out.print(pop.val);
-                pop = stack.pop();
-                System.out.print(pop.val);
+                // 没理由
+                if(!stack.isEmpty()){
+                    pop = stack.pop();
+                    System.out.print(pop.val);
+                }
                 if(pop.right != null){
                     treeNode = pop.right;
                     stack.push(pop.right);
