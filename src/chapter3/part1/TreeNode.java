@@ -1,11 +1,7 @@
 package chapter3.part1;
 
-import com.sun.istack.internal.NotNull;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Optional;
-import java.util.Stack;
+import java.time.temporal.Temporal;
+import java.util.*;
 
 /**
  * https://www.cnblogs.com/wylwyl/p/10477528.html
@@ -179,11 +175,14 @@ class Order {
         inOrder(f);
         System.out.println();
         inorderWithStack(f);
+        postOrderNo(f);
 
-//        System.out.println("后序遍历");
+        System.out.println("后序遍历");
 //        // 后序
-//        postOrder(f);
-
+        postOrder(f);
+        postOrderNo(f);
+        System.out.println();
+        postOrderWithStack(f);
     }
 
     /**
@@ -249,20 +248,6 @@ class Order {
                 }
             }
         }
-
-
-
-    }
-
-    /**
-     * 后序遍历
-     * @param treeNode
-     */
-    private static void postOrder(TreeNode treeNode){
-
-        Optional.ofNullable(treeNode.getLeft()).ifPresent(Order::postOrder);
-        Optional.ofNullable(treeNode.getRight()).ifPresent(Order::postOrder);
-        System.out.print(treeNode.val);
     }
 
     // 非递归算法
@@ -270,23 +255,105 @@ class Order {
      * 用栈来保存先前走过的路径，以便可以在访问完子树后,可以利用栈中的信息,回退到当前节点的双亲节点,进行下一步操作。
      *
      */
-
     private static void inOrderNo(TreeNode treeNode){
+        System.out.println();
         Stack<TreeNode> stack = new Stack<>();
         for(;!stack.isEmpty() ||treeNode !=null;){
-            if(treeNode ==null){
+            if(treeNode !=null){
+                // 还有左右结点的时候：存
+                stack.push(treeNode);
+                treeNode = treeNode.left;
+            }else{
                 // left 为null，取出父节点。
                 // 再判断right 是否null
                 // 左右结点遍历完之后：取
                 treeNode = stack.pop();
                 System.out.print(treeNode.val);
+                // 出栈的元素指向右节点
                 treeNode = treeNode.right;
+            }
+        }
+    }
+
+    /**
+     * 后序遍历
+     * @param treeNode
+     */
+    private static void postOrder(TreeNode treeNode){
+        Optional.ofNullable(treeNode.getLeft()).ifPresent(Order::postOrder);
+        Optional.ofNullable(treeNode.getRight()).ifPresent(Order::postOrder);
+        System.out.print(treeNode.val);
+    }
+
+    private static void postOrderWithStack(TreeNode treeNode){
+        System.out.println();
+        Stack<TreeNode> stack = new Stack<>();
+        // 用来保存已经走到右节点的，父节点
+        Set<TreeNode> set = new HashSet<>();
+        // 结束循环的条件
+        for (;!stack.isEmpty()||treeNode!=null;){
+            // 左节点
+            if(treeNode.left !=null){
+                stack.push(treeNode.left);
+                treeNode = treeNode.left;
             }else{
-                // 还有左右结点的时候：存
+                // 没有左节点了，输出
+                System.out.print(treeNode.val);
+                // 出栈，父节点
+                treeNode = stack.pop();
+                // 走过父节点
+                if(set.contains(treeNode)){
+                    // 输出，不放回栈中
+                    System.out.print(treeNode);
+                    treeNode = stack.pop();
+                }else{
+                    if(treeNode.right !=null){
+                        // 右节点不为空放回去
+                        stack.push(treeNode);
+                        // 标记已走到右树
+                        set.add(treeNode);
+                        treeNode = treeNode.right;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 非递归后序遍历
+     * @param treeNode
+     */
+    private static void postOrderNo(TreeNode treeNode){
+        System.out.println();
+        Stack<TreeNode> stack = new Stack<>();
+        // 标记最近出栈的节点，用于判断是否是p节点的右孩子，如果是的话，就可以访问p节点
+        TreeNode pre = treeNode;
+
+        for(;treeNode!=null ||!stack.isEmpty();){
+            // 有左节点的，存
+            if(treeNode !=null){
                 stack.push(treeNode);
                 treeNode = treeNode.left;
+            }else{
+                treeNode = stack.pop();
+                // 根节点处理。
+                // 很明显：右节点为空时，输出根节点。
+                // 如果右子树已经遍历过，输出根节点。
+                if(treeNode.right == null || treeNode.right ==pre){
+                    System.out.print(treeNode.val);
+                    pre = treeNode;
+                    treeNode = null;
+                } else {
+                    stack.push(treeNode);
+                    treeNode = treeNode.right;
+                    stack.push(treeNode);
+                    treeNode = treeNode.left;
+                }
             }
 
         }
     }
+
+
+
 }
