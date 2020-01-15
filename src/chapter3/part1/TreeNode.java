@@ -223,40 +223,33 @@ class Order {
 
     /**
      * 非递归 中序遍历
-     * 完全由我来控制节点，不合理。
      * @param treeNode
      */
-    @Deprecated
     private static void inorderWithStack(TreeNode treeNode) {
         Stack<TreeNode> stack = new Stack<TreeNode>();
-        stack.push(treeNode);
-        for(;!stack.isEmpty() || treeNode!=null;){
-            // 一直找到左节点
+        // 有叶子节点入栈
+        for(;treeNode !=null;){
+            // 重构代码。只把根节点入栈
+            // 如有叶子节点，就入栈
             if(treeNode.left !=null){
-                treeNode = treeNode.left;
                 stack.push(treeNode);
-                continue;
-            }
-            // 从栈中取出，左（右）节点
-            TreeNode pop = stack.pop();
-            if(pop.left == null){
-                // 输出左节点
-                System.out.print(pop.val);
-                // 存粹为了应付
-                if(!stack.isEmpty()){
-                    // 接着取出上一个元素，输出 根节点
-                    pop = stack.pop();
-                    System.out.print(pop.val);
+                treeNode = treeNode.left;
+            }else{
+                System.out.print(treeNode.val);
+                // 出栈根节点
+                // 处理根节点已出栈，此时栈中无元素
+                if (!stack.isEmpty()) {
+                    treeNode = stack.pop();
+                    System.out.print(treeNode.val);
                 }
-                // 把右节点入栈
-                if(pop.right != null){
-                    treeNode = pop.right;
-                    stack.push(pop.right);
+                if(treeNode.right !=null){
+                    treeNode = treeNode.right;
                 }else{
                     treeNode = null;
                 }
             }
         }
+
 
 
     }
