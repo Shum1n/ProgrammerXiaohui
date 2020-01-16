@@ -298,6 +298,11 @@ class Order {
         System.out.print(treeNode.val);
     }
 
+    /**
+     * 非递归 后序遍历。
+     * 额外使用空间，记录是否访问过节点
+     * @param treeNode
+     */
     private static void postOrderWithStack(TreeNode treeNode) {
         System.out.println();
         Stack<TreeNode> stack = new Stack<>();
