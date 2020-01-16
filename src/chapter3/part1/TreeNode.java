@@ -1,6 +1,5 @@
 package chapter3.part1;
 
-import java.time.temporal.Temporal;
 import java.util.*;
 
 /**
@@ -19,14 +18,6 @@ public class TreeNode {
 
     TreeNode(Integer x) {
         data = x;
-    }
-
-    public String getVal() {
-        return val;
-    }
-
-    public void setVal(String val) {
-        this.val = val;
     }
 
     public TreeNode getLeft() {
@@ -191,6 +182,9 @@ class Order {
         postOrder(f);
         postOrderNo(f);
         postOrderWithStack(f);
+
+        System.out.println("层序遍历");
+        levelOrder(f);
     }
 
     /**
@@ -380,6 +374,24 @@ class Order {
                 }
             }
 
+        }
+    }
+
+    /**
+     * 非递归层序遍历
+     * @param treeNode
+     */
+    private static void levelOrder(TreeNode treeNode) {
+        // 先根节点，左节点、右节点
+        // 先进先出
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(treeNode);
+        for (; !queue.isEmpty(); ) {
+            // 取出第一个元素
+            treeNode = queue.poll();
+            System.out.print(treeNode.val);
+            Optional.ofNullable(treeNode.left).ifPresent(queue::offer);
+            Optional.ofNullable(treeNode.right).ifPresent(queue::offer);
         }
     }
 
