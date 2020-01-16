@@ -184,6 +184,8 @@ class Order {
         postOrderWithStack(f);
 
         System.out.println("层序遍历");
+        levelOrderWithQueue(f);
+        System.out.println();
         levelOrder(f);
     }
 
@@ -377,11 +379,46 @@ class Order {
         }
     }
 
+
+    static List<List<String>>  levels = new ArrayList<>();
+
+    /**
+     * https://www.cnblogs.com/kexinxin/p/11745764.html
+     * @param node
+     * @param level
+     */
+    private static void helper(TreeNode node, int level) {
+        // start the current level
+        if (levels.size() == level)
+            levels.add(new ArrayList<>());
+
+        // fulfil the current level
+        levels.get(level).add(node.val);
+
+        // process child nodes for the next level
+        if (node.left != null)
+            helper(node.left, level + 1);
+        if (node.right != null)
+            helper(node.right, level + 1);
+    }
+
+    /**
+     * 递归层次遍历
+     * @param root
+     * @return
+     */
+    private static List<List<String>> levelOrder(TreeNode root) {
+        if (root == null) return levels;
+        helper(root, 0);
+        System.out.println(levels);
+        return levels;
+    }
+
     /**
      * 非递归层序遍历
      * @param treeNode
      */
-    private static void levelOrder(TreeNode treeNode) {
+    private static void levelOrderWithQueue(TreeNode treeNode) {
         // 先根节点，左节点、右节点
         // 先进先出
         Queue<TreeNode> queue = new LinkedList<>();
