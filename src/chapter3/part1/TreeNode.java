@@ -394,6 +394,10 @@ class Order {
 
         // fulfil the current level
         levels.get(level).add(node.val);
+        // 明显不能这样 ，结果不同
+        // FBADCEGIH
+        // [[F], [B, G], [A, D, I], [C, E, H]]
+//        System.out.print(node.val);
 
         // process child nodes for the next level
         if (node.left != null)
