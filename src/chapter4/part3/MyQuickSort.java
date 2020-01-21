@@ -7,7 +7,7 @@ public class MyQuickSort {
     public static void main(String[] args) {
         int[] arr = {3,1,2,4,5,6};
         arr = new int[]{4,7,6,5,3,2,8,1};
-//        arr = new int[]{1,2,4,3};
+        arr = new int[]{1,2,4,3};
         quickSort(arr, 0, arr.length-1);
         System.out.println(Arrays.toString(arr));
         quickSort(arr);
@@ -31,6 +31,7 @@ public class MyQuickSort {
      * @param begin
      * @param end
      * @return 返回重合的位置
+     * https://www.bilibili.com/video/av78089094/?spm_id_from=333.788.videocard.6
      */
     private static int partition(int[] arr,int begin,int end){
         int pivot = arr[begin];
@@ -40,22 +41,16 @@ public class MyQuickSort {
             for(;arr[right]>=pivot && right>0 ;){
                 right--;
             }
+            arr[left] = arr[right];
             // 左指针：小于等于基数 left++
             // left<right 重合
             for(;arr[left]<=pivot && left<arr.length -1 && left<right;){
                 left++;
             }
 
-            if(right>=left){
-                // 交换
-                int temp = arr[right];
-                arr[right] = arr[left];
-                arr[left] = temp;
-            }
-
+            arr[right] = arr[left];
         }
         // 交换基准元素
-        arr[begin] = arr[left];
         arr[left] = pivot;
 
         return left;

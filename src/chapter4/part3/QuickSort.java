@@ -7,11 +7,20 @@ import java.util.Arrays;
 
 public class QuickSort {
 
-    public static void quickSort(int[] arr, int startIndex, int endIndex) {
+    public static void main(String[] args) {
+        int[] arr = new int[] {4,7,6,5,3,2,8,1};
+        arr = new int[] {3,1,2,4,5,6};
+        arr = new int[]{1,2,4,3};
+        quickSort(arr, 0, arr.length-1);
+        System.out.println(Arrays.toString(arr));
+    }
+
+    private static void quickSort(int[] arr, int startIndex, int endIndex) {
         // 递归结束条件：startIndex大等于endIndex的时候
         if (startIndex >= endIndex) {
             return;
         }
+        System.out.println(Arrays.toString(arr));
         // 得到基准元素位置
         int pivotIndex = partition(arr, startIndex, endIndex);
         // 根据基准元素，分成两部分递归排序
@@ -51,7 +60,7 @@ public class QuickSort {
         //pivot和指针重合点交换
         arr[startIndex] = arr[left];
         arr[left] = pivot;
-
+        System.out.println(Arrays.toString(arr));
         return left;
     }
 
@@ -80,9 +89,5 @@ public class QuickSort {
         return mark;
     }
 
-    public static void main(String[] args) {
-        int[] arr = new int[] {4,4,6,5,3,2,8,1};
-        quickSort(arr, 0, arr.length-1);
-        System.out.println(Arrays.toString(arr));
-    }
+
 }
