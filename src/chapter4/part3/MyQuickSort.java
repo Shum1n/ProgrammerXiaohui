@@ -7,9 +7,58 @@ public class MyQuickSort {
     public static void main(String[] args) {
         int[] arr = {3,1,2,4,5,6};
         arr = new int[]{4,7,6,5,3,2,8,1};
-        arr = new int[]{1,2,4,3};
-
+//        arr = new int[]{1,2,4,3};
+        quickSort(arr, 0, arr.length-1);
+        System.out.println(Arrays.toString(arr));
         quickSort(arr);
+    }
+
+    private static void quickSort(int[] arr, int begin, int end) {
+        if (begin >= end) {
+            return;
+        }
+        System.out.println(Arrays.toString(arr));
+        int pivot = partition(arr, begin, end);
+        quickSort(arr,begin,pivot-1);
+        quickSort(arr,pivot+1,end);
+
+    }
+
+
+    /**
+     * 分治双边算法
+     * @param arr
+     * @param begin
+     * @param end
+     * @return 返回重合的位置
+     */
+    private static int partition(int[] arr,int begin,int end){
+        int pivot = arr[begin];
+        int left = begin;
+        int right = end;
+        for(;left<right;){
+            for(;arr[right]>=pivot && right>0 ;){
+                right--;
+            }
+            // 左指针：小于等于基数 left++
+            // left<right 重合
+            for(;arr[left]<=pivot && left<arr.length -1 && left<right;){
+                left++;
+            }
+
+            if(right>=left){
+                // 交换
+                int temp = arr[right];
+                arr[right] = arr[left];
+                arr[left] = temp;
+            }
+
+        }
+        // 交换基准元素
+        arr[begin] = arr[left];
+        arr[left] = pivot;
+
+        return left;
     }
 
     /**
