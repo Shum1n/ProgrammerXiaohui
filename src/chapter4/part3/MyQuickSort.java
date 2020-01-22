@@ -33,26 +33,21 @@ public class MyQuickSort {
      */
     private static int partitionV1(int[] arr,int begin,int end){
         int pivot = arr[begin];
-        int left = begin+1;
-        int right = end;
-        int mark = 0;
-        // 其实一轮循环能解决的问题。非要这样写
-        // 关键还写不对
-        for(;left<right;){
-            // 比基准元素大++
-            for(;arr[left]>=pivot && left<right;){
-                left++;
+        int mark = begin;
+        // 遍历数组
+        for(int i =begin+1;i<end;i++){
+            // 小于基数与mark+1 交换
+            if(pivot <arr[i]){
+                int temp = arr[i];
+                arr[i] = arr[++mark];
+                arr[mark] = temp;
             }
-            // 否则交换基准元素位置+1，交换小于基准位置元素
-            // 将元素小于基准的放一边
-            int temp = arr[++mark];
-            arr[mark] = arr[left];
-            arr[left] = temp;
         }
-        // 循环结束，交换基准元素与mark
+        // 结束循环则交换mark 与基准元素位置
         arr[begin] = arr[mark];
         arr[mark] = pivot;
-        return left;
+        return mark;
+
     }
 
     /**

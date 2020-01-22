@@ -22,7 +22,7 @@ public class QuickSort {
         }
         System.out.println(Arrays.toString(arr));
         // 得到基准元素位置
-        int pivotIndex = partition(arr, startIndex, endIndex);
+        int pivotIndex = partitionV2(arr, startIndex, endIndex);
         // 根据基准元素，分成两部分递归排序
         quickSort(arr, startIndex, pivotIndex - 1);
         quickSort(arr, pivotIndex + 1, endIndex);
@@ -83,9 +83,9 @@ public class QuickSort {
                 arr[i] = p;
             }
         }
-
         arr[startIndex] = arr[mark];
         arr[mark] = pivot;
+        System.out.println(Arrays.toString(arr));
         return mark;
     }
 
