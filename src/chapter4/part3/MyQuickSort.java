@@ -18,12 +18,42 @@ public class MyQuickSort {
             return;
         }
         System.out.println(Arrays.toString(arr));
-        int pivot = partition(arr, begin, end);
+        int pivot = partitionV1(arr, begin, end);
         quickSort(arr,begin,pivot-1);
         quickSort(arr,pivot+1,end);
 
     }
 
+    /**
+     * 分治法——单边循环法
+     * @param arr
+     * @param begin
+     * @param end
+     * @return
+     */
+    private static int partitionV1(int[] arr,int begin,int end){
+        int pivot = arr[begin];
+        int left = begin+1;
+        int right = end;
+        int mark = 0;
+        // 其实一轮循环能解决的问题。非要这样写
+        // 关键还写不对
+        for(;left<right;){
+            // 比基准元素大++
+            for(;arr[left]>=pivot && left<right;){
+                left++;
+            }
+            // 否则交换基准元素位置+1，交换小于基准位置元素
+            // 将元素小于基准的放一边
+            int temp = arr[++mark];
+            arr[mark] = arr[left];
+            arr[left] = temp;
+        }
+        // 循环结束，交换基准元素与mark
+        arr[begin] = arr[mark];
+        arr[mark] = pivot;
+        return left;
+    }
 
     /**
      * 分治双边算法
